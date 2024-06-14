@@ -19,19 +19,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Presentation\Models\SetUserRoleToAdminRequest.cs" />
-      <Compile Remove="Presentation\Models\RegisterModel.cs" />
-      <Compile Remove="Presentation\Controllers\UserController.cs" />
-      <Compile Remove="Presentation\Controllers\GroupController.cs" />
-      <Compile Remove="Infrastructure\Repositories\UserRepository.cs" />
-      <Compile Remove="Infrastructure\Repositories\TokenRepository.cs" />
       <Compile Remove="Core\PermissionRequest.cs" />
       <Compile Remove="Application\Services\DTOs\UserDto.cs" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Infrastructure\Services\" />
-      <Folder Include="Presentation\Controllers\" />
     </ItemGroup>
 
 </Project>
