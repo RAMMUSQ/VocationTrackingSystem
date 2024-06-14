@@ -20,6 +20,11 @@ namespace WebApplication5.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return token;
         }
+        public async Task SaveTokenAsync(Token token)
+        {
+            await _context.Tokens.AddAsync(token);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<Token> GetTokenAsync(string tokenValue)
         {

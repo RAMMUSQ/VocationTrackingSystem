@@ -35,7 +35,7 @@ namespace WebApplication5.Middlewares
 
             if (token != null)
             {
-                _logger.LogInformation("Token found in the request.");
+                _logger.LogInformation($"Token found in the request: {token}");
 
                 var isValidToken = await _tokenService.ValidateTokenAsync(token);
 
@@ -44,6 +44,7 @@ namespace WebApplication5.Middlewares
                     _logger.LogInformation("Token is valid.");
                     await _next(context);
                     return;
+          
                 }
                 else
                 {

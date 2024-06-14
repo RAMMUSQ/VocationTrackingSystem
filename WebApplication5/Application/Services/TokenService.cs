@@ -12,10 +12,12 @@ namespace WebApplication5.Services
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
+        private readonly ILogger<TokenService> _logger;
 
-        public TokenService(IConfiguration configuration)
+        public TokenService(IConfiguration configuration, ILogger<TokenService> logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         public string GenerateToken(User user)
@@ -33,18 +35,12 @@ namespace WebApplication5.Services
                     new Claim(ClaimTypes.Role, user.Role.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(5),
-                SigningCredentials = signingCredentials
+                SigningCredentials = signingCredentials,
+                Issuer = "System.Security.Claims.ClaimsIdentity",
+                Audience = "System.Security.Claims.ClaimsIdentity"
             };
 
-            var header = new JwtHeader(signingCredentials)
-            {
-                { "kid", "RamazanBakan" }
-            };
-
-            var payload = new JwtPayload(tokenDescriptor.Subject.ToString(), tokenDescriptor.Audience, tokenDescriptor.Subject.Claims, 
-                tokenDescriptor.NotBefore, tokenDescriptor.Expires, tokenDescriptor.IssuedAt);
-
-            var token = new JwtSecurityToken(header, payload);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
 
@@ -64,8 +60,10 @@ namespace WebApplication5.Services
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidIssuer = "System.Security.Claims.ClaimsIdentity",
+                    ValidAudience = "System.Security.Claims.ClaimsIdentity",
                     ClockSkew = TimeSpan.Zero
                 };
 
@@ -95,5 +93,6 @@ namespace WebApplication5.Services
         {
             return Task.FromResult(ValidateToken(token));
         }
+
     }
 }

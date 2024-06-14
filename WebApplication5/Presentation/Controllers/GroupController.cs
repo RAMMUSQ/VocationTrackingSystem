@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication5.Services;
-using WebApplication5.DTOs;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.AspNetCore.Mvc;
+using WebApplication5.DTOs;
+using WebApplication5.Interfaces;
 
 namespace WebApplication5.Controllers
 {
@@ -17,12 +17,21 @@ namespace WebApplication5.Controllers
             _groupService = groupService;
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateGroup(GroupDto groupDto)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateGroup([FromBody] GroupDto groupDto)
         {
-            object? result = await _groupService.CreateGroupAsync(groupDto);
-            return Ok(result);
+            var adminUsername = User.Identity.Name; // Assuming the username is stored in the identity
+
+            try
+            {
+                var createdGroup = await _groupService.CreateGroupAsync(groupDto, adminUsername);
+                return Ok(createdGroup);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Forbid(ex.Message);
+            }
         }
     }
 }

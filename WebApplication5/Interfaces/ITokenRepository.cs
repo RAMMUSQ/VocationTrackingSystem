@@ -8,5 +8,6 @@ namespace WebApplication5.Interfaces
     {
         Task<Token> CreateTokenAsync(Token token);
         Task<Token> GetTokenAsync(string tokenValue);
+        Task SaveTokenAsync(Token token);
     }
 }

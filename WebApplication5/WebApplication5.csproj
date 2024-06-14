@@ -23,8 +23,4 @@
       <Compile Remove="Application\Services\DTOs\UserDto.cs" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Infrastructure\Services\" />
-    </ItemGroup>
-
 </Project>
