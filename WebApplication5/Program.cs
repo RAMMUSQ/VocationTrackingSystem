@@ -7,7 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using WebApplication5.Infrastructure.Repositories;
 using WebApplication5.Interfaces;
 using WebApplication5.Middlewares;
-using WebApplication5.Data; // Bu satır eklenmeli
+using WebApplication5.Data;
+using WebApplication5.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,10 +26,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(conStr, ServerVersion.AutoDetect(conStr));
 });
 
-builder.Services.AddScoped<IUserRepository , UserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-builder.Services.AddTransient<ITokenService, TokenService>();
-builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IGroupService, GroupService>();
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -62,8 +65,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseMiddleware<AuthMiddleware>();
-app.UseAuthentication();
+app.UseAuthentication(); // Kimlik doğrulama middleware'ini yetkilendirmeden önce kullanın
+app.UseMiddleware<AuthMiddleware>(); // AuthMiddleware burada olmalı
 app.UseAuthorization();
 
 app.MapControllers();

@@ -25,5 +25,10 @@ namespace WebApplication5.Infrastructure.Repositories
         {
             return await _context.Tokens.FirstOrDefaultAsync(t => t.Value == tokenValue);
         }
+        public async Task AddAsync(Token token)
+        {
+            await _context.Tokens.AddAsync(token);
+            await _context.SaveChangesAsync();
+        }
     }
 }

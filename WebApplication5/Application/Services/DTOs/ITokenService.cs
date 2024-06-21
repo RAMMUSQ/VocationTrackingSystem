@@ -8,5 +8,6 @@ namespace WebApplication5.Services
         string GenerateToken(User user);
         bool ValidateToken(string token);
         Task<bool> ValidateTokenAsync(string tokenValue);
+        Task SaveTokenAsync(Token token);
     }
 }

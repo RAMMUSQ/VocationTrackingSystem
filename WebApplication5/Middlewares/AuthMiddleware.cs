@@ -10,16 +10,14 @@ namespace WebApplication5.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<AuthMiddleware> _logger;
-        private readonly ITokenService _tokenService;
 
-        public AuthMiddleware(RequestDelegate next, ILogger<AuthMiddleware> logger, ITokenService tokenService)
+        public AuthMiddleware(RequestDelegate next, ILogger<AuthMiddleware> logger)
         {
             _next = next;
             _logger = logger;
-            _tokenService = tokenService;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, ITokenService tokenService)
         {
             var path = context.Request.Path.Value.ToLower();
 
@@ -37,7 +35,7 @@ namespace WebApplication5.Middlewares
             {
                 _logger.LogInformation("Token found in the request.");
 
-                var isValidToken = await _tokenService.ValidateTokenAsync(token);
+                var isValidToken = await tokenService.ValidateTokenAsync(token);
 
                 if (isValidToken)
                 {
@@ -56,7 +54,7 @@ namespace WebApplication5.Middlewares
             }
 
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            await context.Response.WriteAsync("Unauthorized - bozuk yer burası");
+            await context.Response.WriteAsync("Unauthorized");
         }
     }
 }

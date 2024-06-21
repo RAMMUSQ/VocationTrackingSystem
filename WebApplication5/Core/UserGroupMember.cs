@@ -1,10 +1,11 @@
-﻿/*namespace WebApplication5.DTOs
+﻿namespace WebApplication5.Core
+    
 {
-    public class PermissionRequestDto
+    public class UserGroupMember
     {
         public int Id { get; set; }
         public int UserId { get; set; }
         public int GroupId { get; set; }
-        public string Status { get; set; }
+        public DateTime JoinDate { get; set; }
     }
-}*/
+}

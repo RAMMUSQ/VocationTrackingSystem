@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*using Microsoft.AspNetCore.Mvc;
 using WebApplication5.DTOs;
 using WebApplication5.Services;
 
@@ -36,4 +36,4 @@ namespace WebApplication5.Presentation.Controllers
             return Ok(result);
         }
     }
-}
+}*/

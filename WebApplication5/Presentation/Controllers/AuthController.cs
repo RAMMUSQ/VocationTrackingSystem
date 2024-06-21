@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Core.Entities;
 using WebApplication5.Models;
 using WebApplication5.Services;
 
@@ -39,7 +40,18 @@ namespace WebApplication5.Controllers
 
             var token = _tokenService.GenerateToken(user);
 
+            // Token'ı veritabanına kaydet
+            var tokenEntity = new Token
+            {
+                UserId = user.Id,
+                Value = token,
+                Expiration = DateTime.UtcNow.AddHours(1) // Token geçerlilik süresi
+            };
+
+            await _tokenService.SaveTokenAsync(tokenEntity);
+
             return Ok(new { Token = token });
         }
+
     }
 }

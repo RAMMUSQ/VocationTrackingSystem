@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 using Core.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using WebApplication5.Interfaces;
 
 namespace WebApplication5.Services
 {
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
+        private readonly ITokenRepository _tokenRepository;
 
-        public TokenService(IConfiguration configuration)
+        public TokenService(IConfiguration configuration,ITokenRepository tokenRepository)
         {
             _configuration = configuration;
+            _tokenRepository = tokenRepository;
         }
 
         public string GenerateToken(User user)
@@ -94,6 +97,10 @@ namespace WebApplication5.Services
         public Task<bool> ValidateTokenAsync(string token)
         {
             return Task.FromResult(ValidateToken(token));
+        }
+        public async Task SaveTokenAsync(Token token)
+        {
+            await _tokenRepository.AddAsync(token);
         }
     }
 }

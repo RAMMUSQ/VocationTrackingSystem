@@ -18,7 +18,7 @@ namespace WebApplication5.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateGroup(GroupDto groupDto)
         {
             object? result = await _groupService.CreateGroupAsync(groupDto);
